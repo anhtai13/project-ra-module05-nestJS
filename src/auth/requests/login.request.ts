@@ -8,12 +8,12 @@ import { UserRole } from 'src/users/enums/user-role.enum';
 
 export class LoginRequest {
   @IsNotEmpty()
-  @Length(4, 10)
+  // @Length(4, 10)
   username: string;
 
   @IsNotEmpty()
   @IsStrongPassword()
-  @Length(8, 20)
+  // @Length(8, 20)
   password: string;
 
   @IsOptional()

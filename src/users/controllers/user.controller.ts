@@ -17,7 +17,7 @@ import { CreateUserRequest } from '../requests/create-user-request';
 import { UsersService } from '../providers/user.service';
 import { SearchUserRequest } from '../requests/search-user-request';
 import { UpdateUserRequest } from '../requests/update-user-request';
-import { Roles } from 'src/auth/decorators/auth.decorator';
+import { Public, Roles } from 'src/auth/decorators/auth.decorator';
 import { UserRole } from '../enums/user-role.enum';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -34,6 +34,7 @@ export class UsersController {
     );
   }
 
+  @Public()
   @Post()
   @HttpCode(201)
   @Roles(UserRole.ADMIN)

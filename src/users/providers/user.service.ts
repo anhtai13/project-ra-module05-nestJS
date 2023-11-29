@@ -9,7 +9,7 @@ import { UpdateUserRequest } from '../requests/update-user-request';
 import { UserResponse } from '../responses/user.response';
 import { DataSource, ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { SALT_OR_ROUNDS } from 'src/common/constants';
 import { UserProfile } from '../entities/user-profile.entity';
 import * as fs from 'fs';
@@ -18,12 +18,10 @@ import { getFileExtension } from 'src/utilites/upload.util';
 // Tài liệu: https://docs.nestjs.com/providers#services
 @Injectable()
 export class UsersService {
-  private static users: Array<User> = [];
-  private dataSource: DataSource;
-
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private dataSource: DataSource,
   ) {}
 
   async search(

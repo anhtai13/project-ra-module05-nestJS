@@ -11,8 +11,10 @@ export class AuthController {
 
   @Public()
   @Post('/login')
-  @Roles(UserRole.CUSTOMER)
+  // @Roles(UserRole.CUSTOMER)
   async login(@Body() requestBody: LoginRequest): Promise<LoginResponse> {
+    console.log('-------------------', requestBody);
+
     return this.authServie.login(requestBody);
   }
 }

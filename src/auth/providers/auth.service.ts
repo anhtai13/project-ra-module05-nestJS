@@ -15,6 +15,7 @@ export class AuthService {
   ) {}
 
   async login(loginRequest: LoginRequest): Promise<LoginResponse> {
+    console.log('loginRequest' + loginRequest);
     const user = await this.userRepository.findOneBy({
       username: loginRequest.username,
     });
