@@ -33,7 +33,7 @@ export class UsersService {
       relations: {
         profile: true,
         passwords: true,
-        roles: true,
+        // roles: true,
       },
       where: {
         username: ILike(`%${keyword || ''}%`),
@@ -98,6 +98,7 @@ export class UsersService {
       user.email = createUser.email;
       user.firstName = createUser.firstName;
       user.lastName = createUser.lastName;
+      user.avatar = avatarLocation;
       user.password = await bcrypt.hash(createUser.password, SALT_OR_ROUNDS);
       await queryRunner.manager.save(user);
 

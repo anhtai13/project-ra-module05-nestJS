@@ -47,4 +47,7 @@ export class CreateUserRequest {
   @IsOptional()
   @MaxLength(255)
   address: string;
+
+  @IsOptional()
+  avatar: string;
 }

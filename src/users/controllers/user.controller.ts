@@ -11,6 +11,7 @@ import {
   Query,
   UploadedFile,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserRequest } from '../requests/create-user-request';
@@ -20,12 +21,14 @@ import { UpdateUserRequest } from '../requests/update-user-request';
 import { Public, Roles } from 'src/auth/decorators/auth.decorator';
 import { UserRole } from '../enums/user-role.enum';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get()
+  @UseGuards(AuthGuard)
   async index(@Query() searchRequest: SearchUserRequest) {
     return await this.usersService.search(
       searchRequest.keyword,

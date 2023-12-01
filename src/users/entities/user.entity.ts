@@ -42,6 +42,9 @@ export class User {
   @DeleteDateColumn({ name: 'deleted_at', type: 'datetime' })
   deletedAt?: Date;
 
+  @Column({ name: 'avatar', type: 'varchar', length: 255, nullable: true })
+  avatar: string;
+
   @OneToOne(() => UserProfile, (profile: UserProfile) => profile.user)
   profile: UserProfile;
 
