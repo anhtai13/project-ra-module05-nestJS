@@ -12,19 +12,20 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  serialNumber: number;
+  @Column({ name: 'serial_number', type: 'varchar', length: '255' })
+  serialNumber: string;
 
+  @Column({ name: 'user_id', type: 'int' })
   userId: number;
 
   @Column({ name: 'order_at', type: 'datetime' })
   orderAt: Date;
 
+  @Column({ name: 'total_price', type: 'decimal' })
   totalPrice: number;
 
-  // Status
+  @Column({ name: 'status', type: 'tinyint' })
   status: string;
-
-  note?: string;
 
   @CreateDateColumn({ name: 'created_at', type: 'datetime' })
   createdAt: Date;

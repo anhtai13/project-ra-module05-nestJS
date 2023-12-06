@@ -1,9 +1,15 @@
-import { IsDate, IsInt, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsDate,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateOrderRequest {
   @IsNotEmpty()
   @IsInt()
-  serialNumber: number;
+  serialNumber: string;
 
   @IsNotEmpty()
   @IsInt()
@@ -18,7 +24,4 @@ export class CreateOrderRequest {
 
   @IsNotEmpty()
   status: string;
-
-  @IsOptional()
-  note?: string;
 }

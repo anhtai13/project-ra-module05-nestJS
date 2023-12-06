@@ -24,11 +24,11 @@ export class User {
   @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
 
-  @Column({ name: 'first_name', type: 'varchar', length: 50, nullable: true })
-  firstName?: string;
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  first_name?: string;
 
-  @Column({ name: 'last_name', type: 'varchar', length: 50, nullable: true })
-  lastName?: string;
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  last_name?: string;
 
   @Column({ type: 'varchar', length: 255 })
   password: string;
@@ -44,6 +44,9 @@ export class User {
 
   @Column({ name: 'avatar', type: 'varchar', length: 255, nullable: true })
   avatar: string;
+
+  @Column({ name: 'role', type: 'varchar', length: 255, nullable: true })
+  role: string;
 
   @OneToOne(() => UserProfile, (profile: UserProfile) => profile.user)
   profile: UserProfile;

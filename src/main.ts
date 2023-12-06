@@ -9,6 +9,6 @@ async function bootstrap() {
   // Link tài liệu: https://docs.nestjs.com/pipes#class-validator
   // Cài đặt thư viện: npm i --save class-validator class-transformer
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  await app.listen(3000);
+  await app.listen(8000);
 }
 bootstrap();

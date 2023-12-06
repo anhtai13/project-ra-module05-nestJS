@@ -25,7 +25,7 @@ export class OrdersService {
     return await this.orderRepository.findAndCount({
       relations: {},
       where: {
-        note: ILike(`%${keyword || ''}%`),
+        serialNumber: ILike(`%${keyword || ''}%`),
       },
       order: { id: 'DESC' }, // ORDER BY
       take: 5, // Tương đương LIMIT
@@ -46,7 +46,6 @@ export class OrdersService {
       order.orderAt = createOrder.orderAt;
       order.totalPrice = createOrder.totalPrice;
       order.status = createOrder.status;
-      order.note = createOrder.note;
       await queryRunner.manager.save(order);
 
       await queryRunner.commitTransaction();

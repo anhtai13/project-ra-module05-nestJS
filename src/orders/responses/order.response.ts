@@ -3,7 +3,7 @@ import { Order } from '../entities/order.entity';
 export class OrderResponse {
   id: number;
 
-  serialNumber: number;
+  serialNumber: string;
 
   userId: number;
 
@@ -22,6 +22,5 @@ export class OrderResponse {
     this.orderAt = order.orderAt;
     this.totalPrice = order.totalPrice;
     this.status = order.status;
-    this.note = order.note;
   }
 }

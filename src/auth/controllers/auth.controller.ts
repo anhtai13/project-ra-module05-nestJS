@@ -1,9 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from '../providers/auth.service';
 import { LoginRequest } from '../requests/login.request';
 import { LoginResponse } from '../responses/login.response';
-import { Public, Roles } from '../decorators/auth.decorator';
-import { UserRole } from 'src/users/enums/user-role.enum';
+import { Public } from '../decorators/auth.decorator';
 
 @Controller()
 export class AuthController {

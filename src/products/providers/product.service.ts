@@ -12,12 +12,10 @@ import * as fs from 'fs';
 // Tài liệu: https://docs.nestjs.com/providers#services
 @Injectable()
 export class ProductsService {
-  private static products: Array<Product> = [];
-  private dataSource: DataSource;
-
   constructor(
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
+    private dataSource: DataSource,
   ) {}
 
   async search(
@@ -89,6 +87,7 @@ export class ProductsService {
       product.category = createProduct.category;
       product.description = createProduct.description;
       product.unitPrice = createProduct.unitPrice;
+      product.image = imageLocation;
       await queryRunner.manager.save(product);
 
       await queryRunner.commitTransaction();

@@ -8,7 +8,6 @@ export class UpdateProductRequest {
   @MaxLength(50)
   description: string;
 
-  @IsNumber()
   @IsNotEmpty()
-  unitPrice: number;
+  unitPrice: any;
 }

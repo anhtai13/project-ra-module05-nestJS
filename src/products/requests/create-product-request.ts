@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsPositive, MaxLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateProductRequest {
   @IsNotEmpty()
@@ -13,11 +19,12 @@ export class CreateProductRequest {
   category: string;
 
   @IsOptional()
-  @MaxLength(50)
-  description: string;
+  description?: string;
 
   @IsNumber()
   @IsNotEmpty()
-  @IsPositive()
   unitPrice: number;
+
+  @IsOptional()
+  image?: string;
 }

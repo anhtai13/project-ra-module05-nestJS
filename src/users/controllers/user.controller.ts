@@ -30,6 +30,7 @@ export class UsersController {
   @Get()
   @UseGuards(AuthGuard)
   async index(@Query() searchRequest: SearchUserRequest) {
+    console.log(searchRequest);
     return await this.usersService.search(
       searchRequest.keyword,
       searchRequest.page,
@@ -40,7 +41,7 @@ export class UsersController {
   @Public()
   @Post()
   @HttpCode(201)
-  @Roles(UserRole.ADMIN)
+  // @Roles(UserRole.ADMIN)
   @UseInterceptors(FileInterceptor('avatar'))
   async create(
     @Body() requestBody: CreateUserRequest,
@@ -54,15 +55,13 @@ export class UsersController {
     return await this.usersService.find(id);
   }
 
+  @Put('/:id')
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() requestBody: UpdateUserRequest,
     @UploadedFiles()
     files: { avatar?: Express.Multer.File[]; images?: Express.Multer.File[] },
   ) {
-    console.log('avatar', files.avatar[0]);
-    console.log('images', files.images);
-
     return await this.usersService.update(id, requestBody);
   }
 

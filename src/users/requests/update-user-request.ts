@@ -16,7 +16,9 @@ export class UpdateUserRequest {
   @MaxLength(50)
   lastName: string;
 
-  @IsNotEmpty()
-  @IsStrongPassword()
-  password: string;
+  @IsOptional()
+  password?: string;
+
+  @IsOptional()
+  role: string;
 }

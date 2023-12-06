@@ -11,11 +11,14 @@ export class UserResponse {
 
   lastName?: string;
 
+  role: string;
+
   constructor(user: User) {
     this.id = user.id;
     this.username = user.username;
     this.email = user.email;
-    this.firstName = user.firstName;
-    this.lastName = user.lastName;
+    this.firstName = user.first_name;
+    this.lastName = user.last_name;
+    this.role = user.role;
   }
 }

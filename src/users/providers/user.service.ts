@@ -35,9 +35,11 @@ export class UsersService {
         passwords: true,
         // roles: true,
       },
-      where: {
-        username: ILike(`%${keyword || ''}%`),
-      },
+      where: [
+        { username: ILike(`%${keyword || ''}%`) },
+        { email: ILike(`%${keyword || ''}%`) },
+      ],
+
       order: { id: 'DESC' }, // ORDER BY
       take: 5, // Tương đương LIMIT
       skip: 0, // Tương đương OFFSET
@@ -96,9 +98,10 @@ export class UsersService {
       const user: User = new User();
       user.username = createUser.username;
       user.email = createUser.email;
-      user.firstName = createUser.firstName;
-      user.lastName = createUser.lastName;
+      user.first_name = createUser.firstName;
+      user.last_name = createUser.lastName;
       user.avatar = avatarLocation;
+      user.role = createUser.role;
       user.password = await bcrypt.hash(createUser.password, SALT_OR_ROUNDS);
       await queryRunner.manager.save(user);
 

@@ -14,8 +14,7 @@ import {
 // https://github.com/typestack/class-validator#validation-decorators
 export class CreateUserRequest {
   @IsNotEmpty()
-  @MinLength(4)
-  @MaxLength(10)
+  @Length(4, 10)
   username: string;
 
   @IsNotEmpty()
@@ -41,7 +40,7 @@ export class CreateUserRequest {
   gender: number;
 
   @IsOptional()
-  // @IsPhoneNumber('VN')
+  @IsPhoneNumber('VN')
   phoneNumber: string;
 
   @IsOptional()
@@ -50,4 +49,7 @@ export class CreateUserRequest {
 
   @IsOptional()
   avatar: string;
+
+  @IsNotEmpty()
+  role: string;
 }
