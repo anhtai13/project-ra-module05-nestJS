@@ -1,3 +1,4 @@
 export class LoginResponse {
-    token: string;
+  token: string;
+  id: number;
 }

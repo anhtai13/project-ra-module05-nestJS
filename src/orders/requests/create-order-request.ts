@@ -18,6 +18,9 @@ export class CreateOrderRequest {
   @IsDate()
   orderAt: Date;
 
+  @IsDate()
+  createdAt: Date;
+
   @IsInt()
   @IsNotEmpty()
   totalPrice: number;

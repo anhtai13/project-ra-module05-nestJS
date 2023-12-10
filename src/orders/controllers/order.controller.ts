@@ -30,7 +30,7 @@ export class OrdersController {
 
   @Post()
   @HttpCode(201)
-  async create(@Body() requestBody: CreateOrderRequest) {
+  async create(@Body() requestBody: any) {
     await this.ordersService.create(requestBody);
   }
 

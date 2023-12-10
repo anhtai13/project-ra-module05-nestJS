@@ -98,9 +98,9 @@ export class UsersService {
       const user: User = new User();
       user.username = createUser.username;
       user.email = createUser.email;
-      user.first_name = createUser.firstName;
-      user.last_name = createUser.lastName;
-      user.avatar = avatarLocation;
+      user.first_name = createUser.first_name;
+      user.last_name = createUser.last_name;
+      user.avatar = avatarPath;
       user.role = createUser.role;
       user.password = await bcrypt.hash(createUser.password, SALT_OR_ROUNDS);
       await queryRunner.manager.save(user);

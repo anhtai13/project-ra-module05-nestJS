@@ -10,15 +10,18 @@ import {
 export class UpdateUserRequest {
   @IsOptional()
   @MaxLength(50)
-  firstName: string;
+  first_name: string;
 
   @IsOptional()
   @MaxLength(50)
-  lastName: string;
+  last_name: string;
 
   @IsOptional()
   password?: string;
 
   @IsOptional()
   role: string;
+
+  @IsOptional()
+  avatar?: string;
 }

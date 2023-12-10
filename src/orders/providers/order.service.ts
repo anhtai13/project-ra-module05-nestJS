@@ -9,12 +9,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 // Tài liệu: https://docs.nestjs.com/providers#services
 @Injectable()
 export class OrdersService {
-  private static orders: Array<Order> = [];
-  private dataSource: DataSource;
-
   constructor(
     @InjectRepository(Order)
     private orderRepository: Repository<Order>,
+    private dataSource: DataSource,
   ) {}
 
   async search(
@@ -33,7 +31,7 @@ export class OrdersService {
     });
   }
 
-  async create(createOrder: CreateOrderRequest): Promise<void> {
+  async create(createOrder: any): Promise<void> {
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -41,13 +39,13 @@ export class OrdersService {
 
     try {
       const order: Order = new Order();
-      order.serialNumber = createOrder.serialNumber;
-      order.userId = createOrder.userId;
-      order.orderAt = createOrder.orderAt;
-      order.totalPrice = createOrder.totalPrice;
+      order.serialNumber = createOrder.serial_number;
+      order.userId = createOrder.user_id;
+      order.totalPrice = createOrder.total_price;
       order.status = createOrder.status;
+      order.orderAt = createOrder.order_at;
+      order.createdAt = createOrder.created_at;
       await queryRunner.manager.save(order);
-
       await queryRunner.commitTransaction();
     } catch (err) {
       await queryRunner.rollbackTransaction();

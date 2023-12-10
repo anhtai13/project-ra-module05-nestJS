@@ -1,11 +1,15 @@
-import { IsDate, IsInt, IsNotEmpty, IsOptional } from 'class-validator';
+import {
+  IsDate,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+} from 'class-validator';
 
 export class UpdateOrderRequest {
   @IsOptional()
-  @IsDate()
-  orderAt: Date;
+  orderAt: string;
 
-  @IsInt()
   @IsNotEmpty()
   totalPrice: number;
 
@@ -13,5 +17,5 @@ export class UpdateOrderRequest {
   status: string;
 
   @IsOptional()
-  note?: string;
+  createdAt: string;
 }
