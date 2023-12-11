@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  Request,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -17,6 +18,7 @@ import { ProductsService } from '../providers/product.service';
 import { SearchProductRequest } from '../requests/search-product-request';
 import { UpdateProductRequest } from '../requests/update-product-request';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { request } from 'http';
 
 @Controller('products')
 export class ProductsController {
@@ -33,8 +35,9 @@ export class ProductsController {
   async create(
     @Body() requestBody: CreateProductRequest,
     @UploadedFile() image: Express.Multer.File,
+    @Request() request,
   ) {
-    await this.productsService.create(requestBody, image);
+    await this.productsService.create(requestBody, image, request['user'].sub);
   }
 
   @Get('/:id')
@@ -47,8 +50,9 @@ export class ProductsController {
     @Param('id', ParseIntPipe) id: number,
     @Body() requestBody: UpdateProductRequest,
     @UploadedFile() image: Express.Multer.File,
+    @Request() request,
   ) {
-    return await this.productsService.update(id, requestBody);
+    return await this.productsService.update(id, requestBody, image, request['user'].sub);
   }
 
   @Delete('/:id')

@@ -13,19 +13,33 @@ import { Public } from '../decorators/auth.decorator';
 
 @Controller()
 export class AuthController {
-  constructor(private authServie: AuthService) {}
+  constructor(private authService: AuthService) {}
 
   @Get('/auth')
   getProfile(@Request() req) {
     console.log(req['user']);
 
-    return this.authServie.getAuth(req['user'].sub);
+    return this.authService.getAuth(req['user'].sub);
   }
 
   @Public()
   @Post('/login')
   // @Roles(UserRole.CUSTOMER)
   async login(@Body() requestBody: LoginRequest): Promise<LoginResponse> {
-    return this.authServie.login(requestBody);
+    return this.authService.login(requestBody);
+  }
+
+  @Public()
+  @Post('register')
+  async register(
+    @Body()
+    requestBody,
+  ): Promise<any> {
+    try {
+      const result = await this.authService.register(requestBody);
+      return result;
+    } catch (error) {
+      throw error;
+    }
   }
 }

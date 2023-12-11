@@ -14,14 +14,14 @@ export class CreateProductRequest {
   name: string;
 
   @IsNotEmpty()
-  category: string;
+  category: number;
 
   @IsOptional()
   description?: string;
 
   @IsNotEmpty()
-  unitPrice: number;
+  unit_price: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   image?: string;
 }

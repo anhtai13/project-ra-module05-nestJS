@@ -7,7 +7,7 @@ export class ProductResponse {
 
   sku: string;
 
-  category: string;
+  category: number;
 
   description?: string;
 
@@ -17,11 +17,11 @@ export class ProductResponse {
 
   createdAt: Date;
 
-  createdById: number;
+  created_by_id: number;
 
   updatedAt: Date;
 
-  updatedById: number;
+  updated_by_id: number;
 
   constructor(product: Product) {
     this.id = product.id;
@@ -29,11 +29,11 @@ export class ProductResponse {
     this.sku = product.sku;
     this.category = product.category;
     this.description = product?.description;
-    this.unitPrice = product.unitPrice;
-    this.image = product?.image;
+    this.unitPrice = product.unit_price;
+    this.image = product.image;
     this.createdAt = product.createdAt;
-    this.createdById = product.createdById;
+    this.created_by_id = product.created_by_id;
     this.updatedAt = product.updatedAt;
-    this.updatedById = product.updatedById;
+    this.updated_by_id = product.updated_by_id;
   }
 }

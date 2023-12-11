@@ -54,6 +54,7 @@ export class ProductsService {
   async create(
     createProduct: CreateProductRequest,
     image: Express.Multer.File,
+    authId: number,
   ): Promise<void> {
     let originalname: string | null = null;
     let path: string | null = null;
@@ -86,8 +87,10 @@ export class ProductsService {
       product.name = createProduct.name;
       product.category = createProduct.category;
       product.description = createProduct.description;
-      product.unitPrice = createProduct.unitPrice;
+      product.unit_price = createProduct.unit_price;
       product.image = imagePath;
+      product.created_by_id = authId;
+      product.updated_by_id = authId;
       await queryRunner.manager.save(product);
 
       await queryRunner.commitTransaction();
@@ -117,17 +120,59 @@ export class ProductsService {
   async update(
     id: number,
     updateProduct: UpdateProductRequest,
-  ): Promise<ProductResponse> {
+    image: Express.Multer.File,
+    authId: number,
+  ): Promise<void> {
     const product: Product = await this.productRepository.findOneBy({ id });
 
-    // Kiểm tra người dùng có tồn tại hay không ?
+    // Kiểm tra sản phẩm có tồn tại hay không ?
     if (!product) {
-      throw new NotFoundException();
+      throw new NotFoundException('Product not found');
     }
 
-    await this.productRepository.update({ id: id }, updateProduct);
+    let imageLocation: string | null = null;
+    let imagePath: string | null = null;
 
-    return await this.find(id);
+    if (image) {
+      // Xử lý ảnh nếu được cung cấp
+      const imageExtension = getFileExtension(image.originalname);
+      imagePath = `image/${updateProduct.name}.${imageExtension}`;
+      imageLocation = `./public/${imagePath}`;
+
+      // Ghi file vào thư mục lưu trữ
+      fs.writeFileSync(imageLocation, image.buffer);
+    }
+
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // Cập nhật thông tin sản phẩm
+      product.sku = updateProduct.sku || product.sku;
+      product.name = updateProduct.name || product.name;
+      product.category = updateProduct.category || product.category;
+      product.description = updateProduct.description || product.description;
+      product.unit_price = updateProduct.unit_price || product.unit_price;
+      product.image = imagePath || product.image;
+      product.updated_by_id = authId;
+
+      await queryRunner.manager.save(product);
+
+      await queryRunner.commitTransaction();
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+
+      // Nếu có lỗi, xóa ảnh đã tạo (nếu có)
+      if (imageLocation) {
+        fs.rmSync(imageLocation);
+      }
+
+      throw err;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async delete(id: number): Promise<void> {

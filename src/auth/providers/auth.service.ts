@@ -6,6 +6,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LoginRequest } from '../requests/login.request';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { UserRole } from 'src/users/enums/user-role.enum';
+import { SALT_OR_ROUNDS } from 'src/common/constants';
 
 @Injectable()
 export class AuthService {
@@ -66,5 +68,18 @@ export class AuthService {
 
     // Trả về token cho client
     return loginResponse;
+  }
+
+  async register(params): Promise<any> {
+    const newUser = new User();
+    newUser.username = params.username;
+    newUser.email = params.email;
+    newUser.first_name = params.first_name;
+    newUser.last_name = params.last_name;
+    newUser.password = await bcrypt.hash(params.password, SALT_OR_ROUNDS);
+    newUser.role = '2';
+    const user = await this.userRepository.save(newUser);
+
+    return { message: 'User created successfully', user };
   }
 }
