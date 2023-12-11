@@ -54,7 +54,7 @@ export class ProductsService {
   async create(
     createProduct: CreateProductRequest,
     image: Express.Multer.File,
-    authId: number,
+    authID: number,
   ): Promise<void> {
     let originalname: string | null = null;
     let path: string | null = null;
@@ -87,10 +87,10 @@ export class ProductsService {
       product.name = createProduct.name;
       product.category = createProduct.category;
       product.description = createProduct.description;
-      product.unit_price = createProduct.unit_price;
       product.image = imagePath;
-      product.created_by_id = authId;
-      product.updated_by_id = authId;
+      product.unit_price = createProduct.unit_price;
+      product.created_by_id = authID;
+      product.updated_by_id = authID;
       await queryRunner.manager.save(product);
 
       await queryRunner.commitTransaction();

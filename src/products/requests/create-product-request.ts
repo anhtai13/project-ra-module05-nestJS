@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsNotEmpty,
   IsNumber,
@@ -20,8 +21,11 @@ export class CreateProductRequest {
   description?: string;
 
   @IsNotEmpty()
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value))
+  @IsPositive()
   unit_price: number;
 
   @IsNotEmpty()
-  image?: string;
+  image: string;
 }

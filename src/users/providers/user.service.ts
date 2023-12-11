@@ -143,60 +143,60 @@ export class UsersService {
     avatar: Express.Multer.File,
   ): Promise<void> {
     const user: User = await this.userRepository.findOneBy({ id });
-  
+
     // Kiểm tra người dùng có tồn tại hay không ?
     if (!user) {
       throw new NotFoundException('User not found');
     }
-  
+
     let avatarLocation: string | null = null;
     let avatarPath: string | null = null;
-  
+
+    console.log('avatar', avatar);
+
     if (avatar) {
       // Xử lý avatar nếu được cung cấp
       const avatarExtension = getFileExtension(avatar.originalname);
-      // avatarPath = `avatar/${updateUser.username}.${avatarExtension}`;
+      avatarPath = `avatar/${user.username}.${avatarExtension}`;
       avatarLocation = `./public/${avatarPath}`;
-  
+
       // Ghi file vào thư mục lưu trữ
       fs.writeFileSync(avatarLocation, avatar.buffer);
     }
-  
+
     // Cập nhật thông tin người dùng
     user.first_name = updateUser.first_name || user.first_name;
     user.last_name = updateUser.last_name || user.last_name;
     user.avatar = avatarPath || user.avatar;
     user.role = updateUser.role || user.role;
-  
+
     if (updateUser.password) {
       // Nếu cung cấp mật khẩu mới, mã hóa và cập nhật
       user.password = await bcrypt.hash(updateUser.password, SALT_OR_ROUNDS);
     }
-  
+
     const queryRunner = this.dataSource.createQueryRunner();
-  
+
     await queryRunner.connect();
     await queryRunner.startTransaction();
-  
+
     try {
       await queryRunner.manager.save(user);
-  
+
       await queryRunner.commitTransaction();
     } catch (err) {
       await queryRunner.rollbackTransaction();
-  
+
       // Nếu có lỗi, xóa avatar đã tạo (nếu có)
       if (avatarLocation) {
         fs.rmSync(avatarLocation);
       }
-  
+
       throw err;
     } finally {
       await queryRunner.release();
     }
-
   }
-  
 
   async delete(id: number): Promise<void> {
     const user: User = await this.userRepository.findOneBy({ id });

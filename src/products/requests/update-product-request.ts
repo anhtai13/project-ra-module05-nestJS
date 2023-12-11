@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsNumber, IsOptional, MaxLength } from 'class-validator';
+import { Transform } from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  MaxLength,
+} from 'class-validator';
 
 export class UpdateProductRequest {
   @IsOptional()
@@ -11,11 +18,13 @@ export class UpdateProductRequest {
   category: number;
 
   @IsOptional()
-  @MaxLength(50)
+  @MaxLength(255)
   description: string;
 
   @IsNotEmpty()
   @IsNumber()
+  @Transform(({ value }) => parseInt(value))
+  @IsPositive()
   unit_price: number;
 
   @IsOptional()

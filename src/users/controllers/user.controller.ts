@@ -42,7 +42,6 @@ export class UsersController {
   @Public()
   @Post()
   @HttpCode(201)
-  // @Roles(UserRole.ADMIN)
   @UseInterceptors(FileInterceptor('avatar'))
   async create(
     @Body() requestBody: CreateUserRequest,
@@ -57,14 +56,14 @@ export class UsersController {
   }
 
   @Put('/:id')
+  @UseInterceptors(FileInterceptor('avatar'))
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() requestBody: UpdateUserRequest,
-    @UploadedFiles()
-    files: { avatar?: Express.Multer.File[]; images?: Express.Multer.File[] },
+    @UploadedFile() avatar: Express.Multer.File,
     @Request() request,
   ) {
-    return await this.usersService.update(id, requestBody, request['user'].sub);
+    return await this.usersService.update(id, requestBody, avatar);
   }
 
   @Delete('/:id')

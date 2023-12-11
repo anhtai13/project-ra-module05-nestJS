@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { LoginResponse } from '../responses/login.response';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
@@ -70,13 +74,21 @@ export class AuthService {
     return loginResponse;
   }
 
-  async register(params): Promise<any> {
+  async register(createUser): Promise<any> {
+    const isExistEmailOrUsername = await this.userRepository.findOne({
+      where: [{ username: createUser.username }, { email: createUser.email }],
+    });
+
+    if (isExistEmailOrUsername) {
+      throw new BadRequestException();
+    }
+
     const newUser = new User();
-    newUser.username = params.username;
-    newUser.email = params.email;
-    newUser.first_name = params.first_name;
-    newUser.last_name = params.last_name;
-    newUser.password = await bcrypt.hash(params.password, SALT_OR_ROUNDS);
+    newUser.username = createUser.username;
+    newUser.email = createUser.email;
+    newUser.first_name = createUser.first_name;
+    newUser.last_name = createUser.last_name;
+    newUser.password = await bcrypt.hash(createUser.password, SALT_OR_ROUNDS);
     newUser.role = '2';
     const user = await this.userRepository.save(newUser);
 
