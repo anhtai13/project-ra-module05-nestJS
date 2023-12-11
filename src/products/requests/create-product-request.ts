@@ -8,11 +8,9 @@ import {
 
 export class CreateProductRequest {
   @IsNotEmpty()
-  @MaxLength(20)
   sku: string;
 
   @IsNotEmpty()
-  @MaxLength(50)
   name: string;
 
   @IsNotEmpty()
@@ -21,7 +19,6 @@ export class CreateProductRequest {
   @IsOptional()
   description?: string;
 
-  @IsNumber()
   @IsNotEmpty()
   unitPrice: number;
 

@@ -87,7 +87,7 @@ export class ProductsService {
       product.category = createProduct.category;
       product.description = createProduct.description;
       product.unitPrice = createProduct.unitPrice;
-      product.image = imageLocation;
+      product.image = imagePath;
       await queryRunner.manager.save(product);
 
       await queryRunner.commitTransaction();

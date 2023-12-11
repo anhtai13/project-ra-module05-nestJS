@@ -14,6 +14,33 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  async getAuth(id: number): Promise<any> {
+    return this.userRepository.findOneBy({ id });
+  }
+
+  async auth(loginRequest: LoginRequest): Promise<LoginResponse> {
+    const user = await this.userRepository.findOneBy({
+      username: loginRequest.username,
+      avatar: loginRequest.avatar,
+    });
+
+    // Kiểm tra mật khẩu, nếu ko trùng khớp thì trả về lỗi
+    const isMatch = await bcrypt.compare(loginRequest.password, user.password);
+    if (!isMatch) {
+      throw new UnauthorizedException('Unauthorized');
+    }
+
+    // Tạo ra token (sử dụng JWT)
+    const payload = { sub: user.id, username: user.username };
+    const token = await this.jwtService.signAsync(payload);
+
+    const loginResponse = new LoginResponse();
+    loginResponse.token = token;
+
+    // Trả về token cho client
+    return loginResponse;
+  }
+
   async login(loginRequest: LoginRequest): Promise<LoginResponse> {
     const user = await this.userRepository.findOneBy({
       username: loginRequest.username,

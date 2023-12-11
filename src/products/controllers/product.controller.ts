@@ -10,11 +10,13 @@ import {
   Put,
   Query,
   UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateProductRequest } from '../requests/create-product-request';
 import { ProductsService } from '../providers/product.service';
 import { SearchProductRequest } from '../requests/search-product-request';
 import { UpdateProductRequest } from '../requests/update-product-request';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('products')
 export class ProductsController {
@@ -27,6 +29,7 @@ export class ProductsController {
 
   @Post()
   @HttpCode(201)
+  @UseInterceptors(FileInterceptor('image'))
   async create(
     @Body() requestBody: CreateProductRequest,
     @UploadedFile() image: Express.Multer.File,
@@ -45,7 +48,6 @@ export class ProductsController {
     @Body() requestBody: UpdateProductRequest,
     @UploadedFile() image: Express.Multer.File,
   ) {
-
     return await this.productsService.update(id, requestBody);
   }
 

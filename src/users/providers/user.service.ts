@@ -41,8 +41,8 @@ export class UsersService {
       ],
 
       order: { id: 'DESC' }, // ORDER BY
-      take: 5, // Tương đương LIMIT
-      skip: 0, // Tương đương OFFSET
+      take: limit, // Tương đương LIMIT
+      skip: (page - 1) * limit, // Tương đương OFFSET
     });
   }
 
@@ -149,6 +149,7 @@ export class UsersService {
     }
 
     if (updateUser.password) {
+      updateUser.avatar = updateUser.avatar;
       updateUser.password = await bcrypt.hash(
         updateUser.password,
         SALT_OR_ROUNDS,

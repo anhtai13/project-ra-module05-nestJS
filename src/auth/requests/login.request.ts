@@ -18,4 +18,7 @@ export class LoginRequest {
 
   @IsOptional()
   role?: UserRole = UserRole.CUSTOMER;
+
+  @IsOptional()
+  avatar: string;
 }
