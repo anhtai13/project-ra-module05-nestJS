@@ -40,6 +40,11 @@ export class OrdersController {
     return await this.ordersService.find(id);
   }
 
+  @Get('/detail/:id')
+  async showDetail(@Param('id', ParseIntPipe) id: number) {
+    return await this.ordersService.showDetails(id);
+  }
+
   @Put('/:id')
   async update(
     @Param('id', ParseIntPipe) id: number,

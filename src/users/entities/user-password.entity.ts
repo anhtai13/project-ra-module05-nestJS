@@ -21,4 +21,5 @@ export class UserPassword {
 
   @Column({ name: 'is_actived', type: 'boolean' })
   isActived: boolean;
+  
 }

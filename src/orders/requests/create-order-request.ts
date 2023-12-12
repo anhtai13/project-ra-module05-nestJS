@@ -6,11 +6,9 @@ import {
   IsOptional,
   IsPositive,
 } from 'class-validator';
-import { PrimaryGeneratedColumn } from 'typeorm';
 
 export class CreateOrderRequest {
 
-  @PrimaryGeneratedColumn()
   order_id: number;
   // @IsNotEmpty()
   // @IsInt()

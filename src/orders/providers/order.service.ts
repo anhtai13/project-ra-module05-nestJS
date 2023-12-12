@@ -12,6 +12,7 @@ import { DataSource, ILike, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/products/entities/product.entity';
 import { OrderDetails } from '../entities/order_details.entity';
+import { User } from 'src/users/entities/user.entity';
 
 // Tài liệu: https://docs.nestjs.com/providers#services
 @Injectable()
@@ -22,6 +23,10 @@ export class OrdersService {
     private orderRepository: Repository<Order>,
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
+    @InjectRepository(OrderDetails)
+    private orderDetailsRepository: Repository<OrderDetails>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async search(
@@ -30,14 +35,15 @@ export class OrdersService {
     limit?: number,
   ): Promise<[Order[], number]> {
     return await this.orderRepository.findAndCount({
-      relations: {},
+      relations: { user: true },
       where: {
-        status: ILike(`%${keyword || ''}%`),
+        user: {
+          username: ILike(`%${keyword || ''}%`),
+        },
       },
-
-      order: { id: 'DESC' }, // ORDER BY
-      take: limit, // Tương đương LIMIT
-      skip: (page - 1) * limit, // Tương đương OFFSET
+      order: { id: 'DESC' },
+      take: limit,
+      skip: (page - 1) * limit,
     });
   }
 
@@ -135,6 +141,24 @@ export class OrdersService {
     }
 
     return new OrderResponse(order);
+  }
+
+  async showDetails(id: number): Promise<any> {
+    const orderResult: OrderDetails[] =
+      await this.orderDetailsRepository.findBy({ order_id: id });
+
+    let orderImage = [];
+    for (const orderDetails of orderResult) {
+      const orderDetailsImage = await this.productRepository.findOneBy({
+        id: orderDetails.product_id,
+      });
+      orderImage.push(orderDetailsImage.image);
+    }
+
+    return {
+      orderResult: orderResult,
+      orderImage: orderImage,
+    };
   }
 
   async update(
