@@ -3,7 +3,7 @@ import { Order } from '../entities/order.entity';
 export class OrderResponse {
   id: number;
 
-  serialNumber: string;
+  serialNumber: number;
 
   userId: number;
 
@@ -12,8 +12,6 @@ export class OrderResponse {
   totalPrice: number;
 
   status: string;
-
-  note?: string;
 
   constructor(order: Order) {
     this.id = order.id;

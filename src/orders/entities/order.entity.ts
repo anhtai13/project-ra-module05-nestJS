@@ -13,7 +13,7 @@ export class Order {
   id: number;
 
   @Column({ name: 'serial_number', type: 'varchar', length: '255' })
-  serialNumber: string;
+  serialNumber: number;
 
   @Column({ name: 'user_id', type: 'int' })
   userId: number;
@@ -30,8 +30,14 @@ export class Order {
   @CreateDateColumn({ name: 'created_at', type: 'datetime' })
   createdAt: Date;
 
+  @Column()
+  created_by_id: number;
+
   @UpdateDateColumn({ name: 'updated_at', type: 'datetime' })
   updatedAt: Date;
+
+  @Column()
+  updated_by_id: number;
 
   @DeleteDateColumn({ name: 'deleted_at', type: 'datetime' })
   deletedAt?: Date;

@@ -6,12 +6,12 @@ export class OrderDetails {
   id: number;
 
   @Column({ name: 'order_id' })
-  orderId: number;
+  order_id: number;
 
   @Column({ name: 'product_id' })
-  productId: number;
+  product_id: number;
 
-  @Column({ name: 'sku', type: 'varchar', length: 10, unique: true })
+  @Column({ name: 'sku', type: 'varchar', length: 10 })
   sku: string;
 
   @Column({ name: 'name', type: 'varchar', length: 255 })

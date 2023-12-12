@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  Request,
 } from '@nestjs/common';
 import { OrdersService } from '../providers/order.service';
 import { SearchOrderRequest } from '../requests/search-order-request';
@@ -30,8 +31,8 @@ export class OrdersController {
 
   @Post()
   @HttpCode(201)
-  async create(@Body() requestBody: any) {
-    await this.ordersService.create(requestBody);
+  async create(@Body() requestBody: CreateOrderRequest, @Request() request) {
+    await this.ordersService.create(requestBody, request['user'].sub);
   }
 
   @Get('/:id')
